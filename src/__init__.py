@@ -15,4 +15,4 @@ IdleDC.debug    = True
 
 IdleDC.login()
 
-IdleDC.send_chat_msg( "Hey guys, this is Bonnie's bot. This is a test message. If you see this then everything is going according to plan." )
+IdleDC.send_chat_msg( "Hey guys, this is Bheesham's bot. This is a test message. If you see this then everything is going according to plan." )
