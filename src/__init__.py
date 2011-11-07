@@ -16,9 +16,8 @@ IdleDC.debug    = True
 IdleDC.login()
 
 if ( IdleDC.logged_in == True ):
-    IdleDC.send_chat_msg( "Hey guys, this is Bonnie's bot. This is a test message. If you see this then everything is going according to plan." )
+    pass
+    # IdleDC.send_chat_msg( "Hey guys, this is Bonnie's bot. This is a test message. If you see this then everything is going according to plan." )
     # Initiate an infinite loop and add something along the lines of hooks
-    
 else:
     print "Could not log in. :("
-    return False
