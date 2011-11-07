@@ -1,12 +1,20 @@
 # Copyright (C) 2011 Bheesham Persaud.
 
+import time
+
 # Setup
-hubHost = 'carletonhub.ca'
-hubPort = 411               # default is 411 for most servers
-botName = 'IdleDC++'
-botPass = ''
+hubHost     = "carletonhub.ca"
+hubPort     = 411               # default is 411 for most servers
+botName     = "IdleDC"
+botPass     = ""
+botOwner    = "Bonnie"
 
 # No need to edit the below.
 from DCBot import DCBot
 
-IdleDCPP = DCBot( hubHost, hubPort, botName, botPass )
+IdleDC          = DCBot( hubHost, hubPort, botName, botPass, botOwner )
+IdleDC.debug    = True
+
+IdleDC.login()
+
+IdleDC.send_chat_msg( "Hey guys, this is Bonnie's bot. This is a test message. If you see this then everything is going according to plan." )
