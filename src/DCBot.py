@@ -59,13 +59,13 @@ class DCBot:
             if ( self.debug == True ): print buff
             if ( buff != "" ):
                 command = self.get_command( buff )
-                if ( command[0] == "Lock" ):
+                if ( command[0] == "Lock" ):                                # Generate a lock, send it.
                     if ( self.debug == True ): print "[DEBUG]Server does not support $NoHello"
                     self.send_msg( "$Key " + self.lock2key( command[1] ) + "|" )
                     self.send_msg( "$ValidateNick " + self.nick + "|")
                 elif ( command[0] == "UserIP" ):
                     if ( self.debug == True ): print "[DEBUG]Got $UserIP"
-                elif ( command[0] == "Hello" ):
+                elif ( command[0] == "Hello" ):                             # Send version, etc, etc       
                     self.send_msg( "$Version " + self.version + "|" )
                     self.send_msg( "$MyINFO $ALL " + 
                                     self.nick + " " + 
@@ -73,13 +73,15 @@ class DCBot:
                                     self.version + "$" + 
                                     self.email + "$" + 
                                     str( self.share_size ) + "$|" )
+                elif ( command[0] == "GetPass" ):                           # We need to send the password!
+                    self.send_msg( "$MyPass " + self.passw + "|")
                 elif ( command[0] == "HubTopic" ):
                     if ( self.debug == True ): print "[DEBUG]Received HUB Topic"
-                elif ( command[0] == "MyINFO" and command[2] == self.nick ):
+                elif ( command[0] == "MyINFO" and command[2] == self.nick ):        # Once it sends this to everyone, assume we're logged in.
                     if ( self.debug == True ): print "[DEBUG]Logged in"
                     self.logged_in = True
                     infinite = False
-        return 1
+        return True
     
     def mainloop(self):
         pass

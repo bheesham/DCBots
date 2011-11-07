@@ -1,0 +1,10 @@
+=======
+0.0.2:
+	- Authenticates if needed?
+	
+0.0.1:
+	- Connects to a DC Hub
+	- Sends a hello world message.
+	
+0.0.0:
+	- Made a class to use for the bot
