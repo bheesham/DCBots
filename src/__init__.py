@@ -1,7 +1,5 @@
 # Copyright (C) 2011 Bheesham Persaud.
 
-import time
-
 # Setup
 hubHost     = "carletonhub.ca"
 hubPort     = 411               # default is 411 for most servers

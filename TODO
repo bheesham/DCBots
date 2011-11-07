@@ -1,3 +1,8 @@
+=======
+0.0.1: 
+	- Connects to a DC Hub.
+	- Sends a "Hello world!" message.
+
 0.0.2:
 	- Authenticates if needed.
 
