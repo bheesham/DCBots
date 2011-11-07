@@ -17,8 +17,8 @@ class DCBot:
     
     # For these values, the user will have to manually change them.
     debug           = False
-    client          = "DCBot"
-    version         = "0.0.1"
+    client          = "DCBat"
+    version         = "0.0.0"
     
     # User related values
     description     = "A friendly bot made for human service."
@@ -59,7 +59,6 @@ class DCBot:
             if ( self.debug == True ): print buff
             if ( buff != "" ):
                 command = self.get_command( buff )
-                
                 if ( command[0] == "Lock" ):
                     if ( self.debug == True ): print "[DEBUG]Server does not support $NoHello"
                     self.send_msg( "$Key " + self.lock2key( command[1] ) + "|" )
@@ -75,7 +74,11 @@ class DCBot:
                                     self.email + "$" + 
                                     str( self.share_size ) + "$|" )
                 elif ( command[0] == "HubTopic" ):
+                    if ( self.debug == True ): print "[DEBUG]Received HUB Topic"
+                elif ( command[0] == "MyINFO" and command[2] == self.nick ):
                     if ( self.debug == True ): print "[DEBUG]Logged in"
+                    self.logged_in = True
+                    infinite = False
         return 1
     
     def mainloop(self):
