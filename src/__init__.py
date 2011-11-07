@@ -1,11 +1,11 @@
 # Copyright (C) 2011 Bheesham Persaud.
 
 # Setup
-hubHost     = "carletonhub.ca"
+hubHost     = ""
 hubPort     = 411               # default is 411 for most servers
 botName     = "IdleDC"
 botPass     = ""
-botOwner    = "Bonnie"
+botOwner    = ""
 
 # No need to edit the below.
 from DCBot import DCBot
