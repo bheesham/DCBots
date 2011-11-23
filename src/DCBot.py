@@ -83,6 +83,13 @@ class DCBot:
                     infinite = False
         return True
     
+    def logout(self):
+        self.send_msg("$Quit");
+        self.logged_in = False
+        self.nick_list = []
+        self.op_list = []
+        pass
+    
     def mainloop(self):
         pass
     
