@@ -17,7 +17,7 @@ class DCBot:
     
     # For these values, the user will have to manually change them.
     debug           = False
-    client          = "DCBat"
+    client          = "DCBot"
     version         = "0.0.0"
     
     # User related values
@@ -104,6 +104,7 @@ class DCBot:
                     if ( tmp != "|" ):
                         buff += tmp
                     else:
+                        if ( self.debug == True ): print "[DEBUG]" + buff
                         return buff
             except socket.timeout:
                 pass
@@ -111,6 +112,7 @@ class DCBot:
                 if ( self.debug == True ): print "[DEBUG]Socket error: " + message
                 sys.exit( 1 )
         # Just in case the socket times out or anything.
+        if ( self.debug == True ): print buff
         return buff
     
     def get_command( self, bstring ):
