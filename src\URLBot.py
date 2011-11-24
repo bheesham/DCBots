@@ -1,5 +1,5 @@
 # Copyright (C) 2011 Bheesham Persaud.
-import httplib, urllib, re
+import httplib, urllib, re, cgi
 
 
 # Setup
@@ -59,6 +59,8 @@ if ( URLBot.logged_in == True ):
                     end_tag   = begin_tag[1].split( "</title>" )
                     title           = end_tag[0]
                     if ( len( title ) < 100 ):
+                        title = title.replace( "$", "&#36;" )
+                        title = title.replace( "|", "&#124;" )
                         URLBot.send_chat_msg( "Title: " + title + " --- URL: " + url )
                 urllib.urlcleanup()
             except:
