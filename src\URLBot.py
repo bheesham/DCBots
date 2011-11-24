@@ -58,7 +58,8 @@ if ( URLBot.logged_in == True ):
                     begin_tag   = page_contents.split( "<title>" )
                     end_tag   = begin_tag[1].split( "</title>" )
                     title           = end_tag[0]
-                    URLBot.send_chat_msg( "Title: " + title + " --- URL: " + url )
+                    if ( len( title ) < 100 ):
+                        URLBot.send_chat_msg( "Title: " + title + " --- URL: " + url )
                 urllib.urlcleanup()
             except:
                 pass
