@@ -28,7 +28,6 @@ if ( URLBot.logged_in == True ):
     # Expressions to save some time.
     
     URLPattern      = re.compile( "([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+){2,3}(\S*)", re.M )
-    TitlePattern    = re.compile( "<title>(.*)</title>", re.M )
     namePattern     = re.compile( botName, re.M )
     
     chat_buffer     = ""
@@ -36,6 +35,8 @@ if ( URLBot.logged_in == True ):
     
     url             = ""
     page_contents   = ""
+    begin_tag       = 0
+    end_tag         = 0
     title           = ""
     
     infinite        = 1
@@ -49,9 +50,14 @@ if ( URLBot.logged_in == True ):
                 url             = "http://" + matches.group(0)
                 server          = urllib.urlopen( url )
                 page_contents   = server.read()
-                title           = TitlePattern.search( page_contents )
-                if ( title is not None ):
-                    title           = title.group(1)
+                
+                begin_tag   = page_contents.find("<title>")
+                end_tag     = page_contents.find("</title>")
+                
+                if ( begin_tag != -1 and end_tag != -1 ):
+                    begin_tag   = page_contents.split( "<title>" )
+                    end_tag   = begin_tag[1].split( "</title>" )
+                    title           = end_tag[0]
                     URLBot.send_chat_msg( "Title: " + title + " --- URL: " + url )
                 urllib.urlcleanup()
             except:
