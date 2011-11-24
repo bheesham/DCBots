@@ -9,6 +9,8 @@ botName     = "URLBot"
 botPass     = ""
 botOwner    = "Bonnie"
 
+ignoreList 	= [ "HubBot" ]
+
 # No need to edit the below.
 from DCBot import DCBot
 
@@ -27,8 +29,8 @@ if ( URLBot.logged_in == True ):
     # Now that it's logged in, we can compile the Regular
     # Expressions to save some time.
     
-    URLPattern      = re.compile( "([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+){2,3}(\S*)", re.M )
-    namePattern     = re.compile( botName, re.M )
+    URLPattern      = re.compile( "([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+){2,3}(\S*)" )
+    namePattern     = re.compile( botName )
     
     chat_buffer     = ""
     chat_commands   = []
@@ -38,14 +40,24 @@ if ( URLBot.logged_in == True ):
     begin_tag       = 0
     end_tag         = 0
     title           = ""
+    ignoreMessage   = False
     
     infinite        = 1
     
     while ( infinite == 1 ):
         chat_buffer   = URLBot.get_buffer()
+        
         matches       = URLPattern.search( chat_buffer )
         is_my_message = namePattern.search( chat_buffer )
-        if ( matches is not None and is_my_message is None ):
+        
+        # Ignore users
+        ignoreMessage = False
+        for name in ignoreList:
+            if chat_buffer.find( name ) > -1:
+                ignoreMessage = True
+        
+        
+        if ( matches is not None and is_my_message is None and ignoreMessage is False ):
             try:
                 url             = "http://" + matches.group(0)
                 server          = urllib.urlopen( url )
@@ -61,6 +73,10 @@ if ( URLBot.logged_in == True ):
                     if ( len( title ) < 100 ):
                         title = title.replace( "$", "&#36;" )
                         title = title.replace( "|", "&#124;" )
+                        title = title.replace( '  ', '' )
+                        title = title.replace( '\n', '' )
+                        title = title.replace( '\r', '' )
+                        
                         URLBot.send_chat_msg( "Title: " + title + " --- URL: " + url )
                 urllib.urlcleanup()
             except:
