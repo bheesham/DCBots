@@ -27,9 +27,9 @@ if ( URLBot.logged_in == True ):
     # Now that it's logged in, we can compile the Regular
     # Expressions to save some time.
     
-    URLPattern   = re.compile( "([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+){2,3}(\S*)", re.M )
-    TitlePattern = re.compile( "<title>(.*)</title>", re.M )
-    
+    URLPattern      = re.compile( "([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+){2,3}(\S*)", re.M )
+    TitlePattern    = re.compile( "<title>(.*)</title>", re.M )
+    namePattern     = re.compile( botName, re.M )
     
     chat_buffer     = ""
     chat_commands   = []
@@ -43,15 +43,19 @@ if ( URLBot.logged_in == True ):
     while ( infinite == 1 ):
         chat_buffer   = URLBot.get_buffer()
         matches       = URLPattern.search( chat_buffer )
-        if ( matches is not None ):
-            url             = "http://" + matches.group(0)
-            server          = urllib.urlopen( url )
-            page_contents   = server.read()
-            title           = TitlePattern.search( page_contents )
-            if ( title is not None ):
-                title           = title.group(1)
-                URLBot.send_chat_msg( "Title: " + title + " --- URL: " + url )
-            urllib.urlcleanup()
+        is_my_message = namePattern.search( chat_buffer )
+        if ( matches is not None and is_my_message is None ):
+            try:
+                url             = "http://" + matches.group(0)
+                server          = urllib.urlopen( url )
+                page_contents   = server.read()
+                title           = TitlePattern.search( page_contents )
+                if ( title is not None ):
+                    title           = title.group(1)
+                    URLBot.send_chat_msg( "Title: " + title + " --- URL: " + url )
+                urllib.urlcleanup()
+            except:
+                pass
     pass
 else:
     print "Could not log in. :("
