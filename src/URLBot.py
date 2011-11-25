@@ -9,7 +9,8 @@ botName     = "URLBot"
 botPass     = ""
 botOwner    = "Bonnie"
 
-ignoreList 	= [ "HubBot" ]
+ignoreUsers	= [ "HubBot" ]
+ignoreURLS  = [ "carletonhub.ca", "imgur.com", "google.", "goo.gl", "bit.ly", "t.co", "tinyurl.com", "facebook.com" ]
 
 # No need to edit the below.
 from DCBot import DCBot
@@ -33,6 +34,7 @@ if ( URLBot.logged_in == True ):
     namePattern     = re.compile( botName )
     
     chat_buffer     = ""
+    chat_buffer_l   = ""
     chat_commands   = []
     
     url             = ""
@@ -46,18 +48,23 @@ if ( URLBot.logged_in == True ):
     
     while ( infinite == 1 ):
         chat_buffer   = URLBot.get_buffer()
+        chat_commands = URLBot.get_command( chat_buffer )
         
         matches       = URLPattern.search( chat_buffer )
         is_my_message = namePattern.search( chat_buffer )
         
         # Ignore users
         ignoreMessage = False
-        for name in ignoreList:
+        for name in ignoreUsers:
             if chat_buffer.find( name ) > -1:
                 ignoreMessage = True
+        # Ignore the URL's
+        for url in ignoreURLS:
+            chat_buffer_l = chat_buffer.lower()
+            if chat_buffer_l.find( url ) > -1:
+                ignoreMessage = True
         
-        
-        if ( matches is not None and is_my_message is None and ignoreMessage is False ):
+        if ( matches is not None and is_my_message is None and ignoreMessage is False and chat_commands == '$CHAT' ):
             try:
                 url             = "http://" + matches.group(0)
                 server          = urllib.urlopen( url )
@@ -77,7 +84,7 @@ if ( URLBot.logged_in == True ):
                         title = title.replace( '\n', '' )
                         title = title.replace( '\r', '' )
                         
-                        URLBot.send_chat_msg( "Title: " + title + " --- URL: " + url )
+                        URLBot.send_chat_msg( title + " --- " + url )
                 urllib.urlcleanup()
             except:
                 pass
