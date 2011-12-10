@@ -77,7 +77,7 @@ if ( URLBot.logged_in == True ):
                     begin_tag   = page_contents.split( "<title>" )
                     end_tag   = begin_tag[1].split( "</title>" )
                     title           = end_tag[0]
-                    if ( len( title ) < 100 ):
+                    if ( len( title ) < 257 ):
                         title = title.replace( "$", "&#36;" )
                         title = title.replace( "|", "&#124;" )
                         title = title.replace( '  ', '' )
