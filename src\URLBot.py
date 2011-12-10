@@ -5,7 +5,7 @@ import httplib, urllib, re, cgi
 # Setup
 hubHost     = "carletonhub.ca"
 hubPort     = 411               # default is 411 for most servers
-botName     = "URLB0t"
+botName     = "URLBot"
 botPass     = ""
 botOwner    = "Bonnie"
 
