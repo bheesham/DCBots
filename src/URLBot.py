@@ -5,7 +5,7 @@ import httplib, urllib, re, cgi
 # Setup
 hubHost     = "carletonhub.ca"
 hubPort     = 411               # default is 411 for most servers
-botName     = "URLBot"
+botName     = "URLB0t"
 botPass     = ""
 botOwner    = "Bonnie"
 
@@ -83,8 +83,14 @@ if ( URLBot.logged_in == True ):
                         title = title.replace( '  ', '' )
                         title = title.replace( '\n', '' )
                         title = title.replace( '\r', '' )
-                        
-                        URLBot.send_chat_msg( title + " --- " + url )
+                    else:
+                        title = title.replace( "$", "&#36;" )
+                        title = title.replace( "|", "&#124;" )
+                        title = title.replace( '  ', '' )
+                        title = title.replace( '\n', '' )
+                        title = title.replace( '\r', '' )
+                        title = title[:256] + "..."
+                    URLBot.send_chat_msg( title + " --- " + url )
                 urllib.urlcleanup()
             except:
                 pass
