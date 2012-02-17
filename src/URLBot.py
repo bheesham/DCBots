@@ -86,6 +86,8 @@ if ( URLBot.logged_in == True ):
                     title = title.replace( "$", "&#36;" )
                     title = title.replace( "|", "&#124;" )
                     title = title.strip()
+                    title = title.replace( '\n', '' )       # Because it doesn't catch ALL of it... always.
+                    title = title.replace( '\r', '' )
                     if ( len( title ) > 256 ):
                         title = title[:256] + "..."
                     URLBot.send_chat_msg( title + " --- " + url )
