@@ -1,12 +1,11 @@
 # Copyright (C) 2011 Bheesham Persaud.
+import httplib, urllib, re, cgi
 
-import urllib, re
-from functions import *
 
 # Setup
 hubHost     = "carletonhub.ca"
 hubPort     = 411               # default is 411 for most servers
-botName     = "URLBotman"
+botName     = "URLBot"
 botPass     = ""
 botOwner    = "Bonnie"
 
@@ -25,12 +24,14 @@ class DiffUserAgent(urllib.FancyURLopener):
     version = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2"
 urllib._urlopener = DiffUserAgent()
 
+
+
 if ( URLBot.logged_in == True ):
     # Now that it's logged in, we can compile the Regular
     # Expressions to save some time.
     
     URLPattern      = re.compile( "([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+){2,3}(\S*)" )
-    namePattern     = re.compile( "<" + botName + ">" )
+    namePattern     = re.compile( botName )
     
     chat_buffer     = ""
     chat_buffer_l   = ""
@@ -45,7 +46,6 @@ if ( URLBot.logged_in == True ):
     
     infinite        = 1
     
-    # Start an infinite loop so that it will always be working
     while ( infinite == 1 ):
         chat_buffer   = URLBot.get_buffer()
         chat_commands = URLBot.get_command( chat_buffer )
@@ -64,31 +64,31 @@ if ( URLBot.logged_in == True ):
             if chat_buffer_l.find( url ) > -1:
                 ignoreMessage = True
         
-        # Make sure that it matches something, it is not your message, not supposed to be ignored. Also, it should be a chat message.
         if ( matches is not None and is_my_message is None and ignoreMessage is False and chat_commands == '$CHAT' ):
             try:
                 url             = "http://" + matches.group(0)
                 server          = urllib.urlopen( url )
                 page_contents   = server.read()
                 
-                # Isolate for between the <title> and </title> tags.
                 begin_tag   = page_contents.find("<title>")
                 end_tag     = page_contents.find("</title>")
                 
-                # Well, does the title exist?
                 if ( begin_tag != -1 and end_tag != -1 ):
-                    begin_tag   	= page_contents.split( "<title>" )
-                    end_tag   		= begin_tag[1].split( "</title>" )
+                    begin_tag   = page_contents.split( "<title>" )
+                    end_tag   = begin_tag[1].split( "</title>" )
                     title           = end_tag[0]
-                    title 			= unescape( title )
-                    # The DC protocol uses these characters. We don't want our bot to screw crap up do we?
-                    # The answer to that should have been no.
-                    title = title.replace( "$", "&#36;" )
-                    title = title.replace( "|", "&#124;" )
-                    title = title.strip()
-                    title = title.replace( '\n', '' )       # Because it doesn't catch ALL of it... always.
-                    title = title.replace( '\r', '' )
-                    if ( len( title ) > 256 ):
+                    if ( len( title ) < 257 ):
+                        title = title.replace( "$", "&#36;" )
+                        title = title.replace( "|", "&#124;" )
+                        title = title.replace( '  ', '' )
+                        title = title.replace( '\n', '' )
+                        title = title.replace( '\r', '' )
+                    else:
+                        title = title.replace( "$", "&#36;" )
+                        title = title.replace( "|", "&#124;" )
+                        title = title.replace( '  ', '' )
+                        title = title.replace( '\n', '' )
+                        title = title.replace( '\r', '' )
                         title = title[:256] + "..."
                     URLBot.send_chat_msg( title + " --- " + url )
                 urllib.urlcleanup()
